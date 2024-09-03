@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,5 @@ Route::get('/test', function () {
 });
 
 Route::get('/posts',[PostController::class,'index']);
+
+Route::get('/test',[TestController::class,'index']);
