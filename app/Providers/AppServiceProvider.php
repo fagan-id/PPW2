@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Tailwind
+        // Paginator::defaultView('view-name');
+
+        // Paginator::defaultSimpleView('view-name');
+
+        // Bootstrap
+        // Paginator::useBootstrapFive();
+        // Paginator::useBootstrapFour();
     }
 }

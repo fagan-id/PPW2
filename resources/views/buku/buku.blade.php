@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    {{-- Script for local bootstrap --}}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    {{-- Script for Datepicker --}}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.css') }}">
+
+    {{-- CDN JQuery for Bootstrap --}}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    {{-- Script for Datepicker and Query --}}
+    <link href=
+    'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    {{-- Data Tables Dependencies --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
     <title>Buku-Buku</title>
 </head>
-<style>
-    body {
-        padding: 20px;
-    }
-    .table th, .table td {
-        text-align: center;
-    }
-    .btn-primary {
-        margin-bottom: 20px;
-    }
-    .total-info {
-        margin-top: 20px;
-        font-weight: bold;
-    }
-</style>
+
 <body>
-    <a href="#" class="btn btn-primary float-start" data-toggle="modal" data-target="#tambahBukuModal">Tambah Buku</a>
-    <table class="table table-striped">
+    @if (Session::has('pesan'))
+        <div class="alert alert-success">
+            {{ Session::get('pesan') }}
+        </div>
+    @endif
+
+    {{-- Heading --}}
+    <div>
+        <h1>Data Buku</h1>
+        <a href="#" class="btn btn-primary float-end" data-toggle="modal" data-target="#tambahBukuModal">Tambah
+            Buku</a>
+    </div>
+
+    <table class="display table table-striped" id="table_buku">
         <thead class="thead-dark">
             <tr>
                 <th>ID</th>
@@ -41,33 +66,38 @@
         </thead>
         <tbody>
             @foreach ($data_buku as $index => $buku)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $buku->judul }}</td>
-                <td>{{ $buku->penulis }}</td>
-                <td>{{ "Rp. " . number_format($buku->harga, 2, ',', '.') }}</td>
-                <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d-m-Y') }}</td>
-                <td>
-                    <div class="d-flex">
-                        <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('buku.destroy', $buku->id) }}" method="POST" class="mr-2">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Yakin Ingin Menghapus?')" type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ $buku->id }}</td>
+                    <td>{{ $buku->judul }}</td>
+                    <td>{{ $buku->penulis }}</td>
+                    <td>{{ 'Rp. ' . number_format($buku->harga, 2, ',', '.') }}</td>
+                    <td>{{ $buku->tgl_terbit->format('d/m/Y') }}</td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('buku.destroy', $buku->id) }}" method="POST" class="mr-2">
+                                @csrf
+                                @method('DELETE')
+                                <button onclick="return confirm('Yakin Ingin Menghapus?')" type="submit"
+                                    class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
+    {{-- <div>{{ $data_buku->links() }}</div> --}}
     <div class="total-info">
         <p>Total Buku: {{ $rowCount }}</p>
-        <p>Total Harga: {{ "Rp. " . number_format($totalPrice, 2, ',', '.') }}</p>
+        <p>Total Harga: {{ 'Rp. ' . number_format($totalPrice, 2, ',', '.') }}</p>
     </div>
 
+
+
     <!-- Modal -->
-    <div class="modal fade" id="tambahBukuModal" tabindex="-1" aria-labelledby="tambahBukuModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tambahBukuModal" tabindex="-1" aria-labelledby="tambahBukuModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,6 +106,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                @if (count($errors)>0)
+                    <ul class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
                 <div class="modal-body">
                     <form method="POST" action="{{ route('buku.store') }}">
                         @csrf
@@ -89,14 +126,15 @@
                         </div>
                         <div class="form-group">
                             <label for="harga">Harga</label>
-                            <input type="text" class="form-control" id="harga" name="harga">
+                            <input type="number" class="form-control" id="harga" name="harga">
                         </div>
                         <div class="form-group">
                             <label for="tgl_terbit">Tanggal Terbit</label>
-                            <input type="date" class="form-control" id="tgl_terbit" name="tgl_terbit">
+                            <input type="text" class="form-control" id="tgl_terbit" name="tgl_terbit"
+                                class="date form-control" placeholder="yyyy/mm/dd">
                         </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ url('/buku') }}" class="btn btn-secondary">Kembali</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <a href="{{ url('/buku') }}" class="btn btn-secondary">Kembali</a>
                     </form>
                 </div>
             </div>
@@ -104,7 +142,33 @@
     </div>
 
 
+    {{-- Date Picker Script --}}
+    <script type="text/javascript">
+    $(document).ready(function (){
+        $(function (){
+            $("#tgl_terbit").
+            datepicker();
+        });
+    })
+    </script>
 
+    {{-- Script DataTables --}}
+    <script>
+        $(document).ready(function() {
+            $('#table_buku').DataTable({
+                "searching": true, // Enable search
+                "paging": true, // Enable pagination
+                "info": true, // Show info
+                "lengthChange": true, // Allow changing the number of entries shown
+                "pageLength": 10 // Default number of entries shown
+            });
+        });
+    </script>
+
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+</script>
+
 </html>

@@ -9,6 +9,11 @@ class Buku extends Model
 {
     use HasFactory;
     protected $table = 'books';
+
+    // Mendenfisikan TGL_TERBIT menggunakan Casts Untuk Laravel 10.x
+    protected $casts = [
+        'tgl_terbit' => 'datetime'
+    ];
 }
 
 

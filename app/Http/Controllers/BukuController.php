@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Buku;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 
 class BukuController extends Controller
 {
@@ -13,7 +15,8 @@ class BukuController extends Controller
     public function index()
     {
 
-        $data_buku = Buku::orderBy('id','desc')->get(); // sort by newest added
+        Paginator::useBootstrapFive();
+        $data_buku = Buku::orderBy('id','asc')->get(); // sort by newest added
         $rowCount = Buku::count(); // total data
         $totalPrice = Buku::sum('harga'); // total harga
         return view('buku.buku',compact('data_buku','rowCount','totalPrice')); // compact() digunakan untuk passing variabel
@@ -33,6 +36,14 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'penulis' => 'required|string|max:30',
+            'harga' => 'required|numeric',
+            'tgl_terbit' => 'required|date'
+        ]);
+
+
         $buku = new Buku();
         $buku->judul = $request->judul;
         $buku->penulis = $request->penulis;
@@ -40,7 +51,7 @@ class BukuController extends Controller
         $buku->tgl_terbit = $request->tgl_terbit;
         $buku->save();
 
-        return redirect('/buku');
+        return redirect('/buku')->with('pesan','Data Buku Berhasil Disimpan!');
     }
 
     /**
@@ -65,13 +76,14 @@ class BukuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'judul' => 'required',
-            'penulis' => 'required',
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'penulis' => 'required|string|max:30',
             'harga' => 'required|numeric',
-            'tgl_terbit' => 'required|date',
+            'tgl_terbit' => 'required|date'
         ]);
-        // dd($request->tgl_terbit);
+
+
         $buku = Buku::findOrFail($id);
         $buku->judul = $request->judul;
         $buku->penulis = $request->penulis;
@@ -79,7 +91,7 @@ class BukuController extends Controller
         $buku->tgl_terbit =$request->tgl_terbit;
         $buku->save();
 
-        return redirect('/buku')->with('sucess','buku berhasil diperbarui');
+        return redirect('/buku')->with('success','buku berhasil diperbarui');
     }
 
     /**
