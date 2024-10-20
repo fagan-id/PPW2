@@ -24,7 +24,8 @@
 
     {{-- Script for Datepicker and Query --}}
     <link href=
-    'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+        rel='stylesheet'>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -40,11 +41,8 @@
 </head>
 
 <body>
-    @if (Session::has('pesan'))
-        <div class="alert alert-success">
-            {{ Session::get('pesan') }}
-        </div>
-    @endif
+
+
 
     {{-- Heading --}}
     <div>
@@ -53,6 +51,53 @@
             Buku</a>
     </div>
 
+    {{-- Search Bar  --}}
+    <form action="{{ route('buku.search') }}" method="get">
+        @csrf
+        <input type="text" name="kata" id="kata" class="form-control" placeholder="Cari..."
+            style="width: 30%;
+        display:inline;
+        margin-top:10px
+        margin-bottom:10px
+        float:right;">
+    </form>
+
+    {{-- Flash Message --}}
+    @if (Session::has('pesan'))
+        <div class="alert alert-success">
+            {{ Session::get('pesan') }}
+        </div>
+    @endif
+
+
+    @if (Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    @endif
+
+    @if (Session::has('deleted'))
+        <div class="alert alert-danger">
+            {{ Session::get('deleted') }}
+        </div>
+    @endif
+
+    {{-- Search Bar Flash Message --}}
+    @if (count($data_buku))
+        <div class="alert alert-success">
+            Ditemukan <strong>{{ count($data_buku) }}</strong> data dengan kata
+            <strong>{{ $cari }}</strong>
+        </div>
+    @else
+        <div class="alert alert-warning">
+            <h4>Data {{ $cari }} tidak ditemukan</h4>
+            <a href="/buku" class="btn btn-warnin">Kembali</a>
+        </div>
+    @endif
+
+
+
+    {{-- Table Buku --}}
     <table class="display table table-striped" id="table_buku">
         <thead class="thead-dark">
             <tr>
@@ -87,6 +132,7 @@
             @endforeach
         </tbody>
     </table>
+
     {{-- <div>{{ $data_buku->links() }}</div> --}}
     <div class="total-info">
         <p>Total Buku: {{ $rowCount }}</p>
@@ -106,10 +152,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                @if (count($errors)>0)
+                @if (count($errors) > 0)
                     <ul class="alert alert-danger">
                         @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                            <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 @endif
@@ -144,12 +190,12 @@
 
     {{-- Date Picker Script --}}
     <script type="text/javascript">
-    $(document).ready(function (){
-        $(function (){
-            $("#tgl_terbit").
-            datepicker();
-        });
-    })
+        $(document).ready(function() {
+            $(function() {
+                $("#tgl_terbit").
+                datepicker();
+            });
+        })
     </script>
 
     {{-- Script DataTables --}}

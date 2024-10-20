@@ -40,3 +40,6 @@ Route::delete('/buku/{id}',[BukuController::class,'destroy']) ->name('buku.destr
 // Update
 Route::get('/buku/show/{id}',[BukuController::class,'show'])->name('buku.show');
 Route::post('/buku/{id}',[BukuController::class,'update'])->name('buku.update');
+
+// Search
+Route::get('/buku/search',[BukuController::class,'search'])->name('buku.search');

@@ -16,10 +16,11 @@ class BukuController extends Controller
     {
 
         Paginator::useBootstrapFive();
+        $cari = '';
         $data_buku = Buku::orderBy('id','asc')->get(); // sort by newest added
         $rowCount = Buku::count(); // total data
         $totalPrice = Buku::sum('harga'); // total harga
-        return view('buku.buku',compact('data_buku','rowCount','totalPrice')); // compact() digunakan untuk passing variabel
+        return view('buku.buku',compact('data_buku','rowCount','totalPrice','cari')); // compact() digunakan untuk passing variabel
 
     }
 // $data_buku = Buku::all()->sortByDesc('id');
@@ -91,7 +92,7 @@ class BukuController extends Controller
         $buku->tgl_terbit =$request->tgl_terbit;
         $buku->save();
 
-        return redirect('/buku')->with('success','buku berhasil diperbarui');
+        return redirect('/buku')->with('success','Data Buku Berhasil diperbarui');
     }
 
     /**
@@ -102,6 +103,25 @@ class BukuController extends Controller
         $buku = Buku::find($id);
         $buku->delete();
 
-        return redirect('/buku');
+        return redirect('/buku')->with('deleted','Berhasil Menghapus Data Buku!');
+    }
+
+        /**
+     * Searching
+     */
+    public function search(Request $request)
+    {
+
+        Paginator::useBootstrapFive();
+        $cari = $request->kata;
+
+        $data_buku = Buku::where('judul','like',"%".$cari.'%')
+            ->orWhere('penulis','like','%'.$cari.'%')->paginate(5);
+        // $data_buku = Buku::where('judul','like','%',$cari.'%')->paginate(5);
+        $rowCount = Buku::count(); // total data
+        $totalPrice = Buku::sum('harga'); // total harga
+
+        $jumlah_buku = $data_buku->count();
+        return view('buku.buku',compact('data_buku','cari','rowCount','totalPrice'));
     }
 }
