@@ -17,10 +17,10 @@ class BukuController extends Controller
 
         Paginator::useBootstrapFive();
         $cari = '';
-        $data_buku = Buku::orderBy('id','asc')->get(); // sort by newest added
+        $data_buku = Buku::orderBy('id','asc')->paginate(10); // sort by newest added
         $rowCount = Buku::count(); // total data
         $totalPrice = Buku::sum('harga'); // total harga
-        return view('buku.buku',compact('data_buku','rowCount','totalPrice','cari')); // compact() digunakan untuk passing variabel
+        return view('buku.buku2',compact('data_buku','rowCount','totalPrice','cari')); // compact() digunakan untuk passing variabel
 
     }
 // $data_buku = Buku::all()->sortByDesc('id');
@@ -122,6 +122,6 @@ class BukuController extends Controller
         $totalPrice = Buku::sum('harga'); // total harga
 
         $jumlah_buku = $data_buku->count();
-        return view('buku.buku',compact('data_buku','cari','rowCount','totalPrice'));
+        return view('buku.buku2',compact('data_buku','cari','rowCount','totalPrice'));
     }
 }

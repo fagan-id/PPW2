@@ -1,54 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    {{-- Script for local bootstrap --}}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-    {{-- Script for Datepicker --}}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.css') }}">
-
-    {{-- CDN JQuery for Bootstrap --}}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-    {{-- Script for Datepicker and Query --}}
-    <link href=
-    'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
-        rel='stylesheet'>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
-    {{-- Data Tables Dependencies --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-
-    <title>Buku-Buku</title>
-</head>
-
+@extends('layouts')
+@section('content')
 <body>
-    {{-- Heading --}}
-    <div>
-        <h1>Data Buku</h1>
+
+    <div class="mt-4">
         <a href="#" class="btn btn-primary float-end" data-toggle="modal" data-target="#tambahBukuModal">Tambah
             Buku</a>
     </div>
-
     {{-- Search Bar  --}}
     <form action="{{ route('buku.search') }}" method="get">
         @csrf
@@ -131,7 +88,7 @@
         </tbody>
     </table>
 
-    {{-- <div>{{ $data_buku->links() }}</div> --}}
+    <div>{{ $data_buku->links() }}</div>
     <div class="total-info">
         <p>Total Buku: {{ $rowCount }}</p>
         <p>Total Harga: {{ 'Rp. ' . number_format($totalPrice, 2, ',', '.') }}</p>
@@ -173,7 +130,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tgl_terbit">Tanggal Terbit</label>
-                            <input type="text" class="form-control" id="tgl_terbit" name="tgl_terbit"
+                            <input type="date" class="form-control" id="tgl_terbit" name="tgl_terbit"
                                 class="date form-control" placeholder="yyyy/mm/dd">
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -184,34 +141,28 @@
         </div>
     </div>
 
+        {{-- Date Picker Script --}}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(function() {
+                    $("#tgl_terbit").
+                    datepicker();
+                });
+            })
+        </script>
 
-    {{-- Date Picker Script --}}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(function() {
-                $("#tgl_terbit").
-                datepicker();
+        {{-- Script DataTables --}}
+        <script>
+            $(document).ready(function() {
+                $('#table_buku').DataTable({
+                    "searching": true, // Enable search
+                    "paging": true, // Enable pagination
+                    "info": true, // Show info
+                    "lengthChange": true, // Allow changing the number of entries shown
+                    "pageLength": 10 // Default number of entries shown
+                });
             });
-        })
-    </script>
-
-    {{-- Script DataTables --}}
-    <script>
-        $(document).ready(function() {
-            $('#table_buku').DataTable({
-                "searching": true, // Enable search
-                "paging": true, // Enable pagination
-                "info": true, // Show info
-                "lengthChange": true, // Allow changing the number of entries shown
-                "pageLength": 10 // Default number of entries shown
-            });
-        });
-    </script>
-
+        </script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-</script>
-
-</html>
+@endsection
