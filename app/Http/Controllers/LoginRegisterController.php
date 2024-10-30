@@ -87,7 +87,7 @@ class LoginRegisterController extends Controller
         ])->onlyInput('email');
     }
 
-        /**
+    /**
      * Menampilkan Layar Dashboard Untuk Pengguna yang telah Terautentikasi
      */
     public function dashboard()

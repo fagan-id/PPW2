@@ -3,7 +3,9 @@
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SendEmailController;
 use App\Http\Controllers\TestController;
+use App\Mail\SendEmail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,3 +61,7 @@ Route::controller(LoginRegisterController::class)->group(function(){
     Route::get('/dashboard','dashboard')->name('dashboard');
     Route::post('/logout','logout')->name('logout');
 });
+
+// Send Email
+Route::get('/send-email',[SendEmailController::class,'index'])->name('kirim-email');
+Route::post('/post-email',[SendEmailController::class,'store'])->name('post-email');
