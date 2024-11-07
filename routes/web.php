@@ -23,34 +23,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return view('test');
-});
-
-Route::get('/dashboard_admin', function () {
-    return view('dashboard_admin');
-});
-
-Route::get('/posts',[PostController::class,'index']);
-
-Route::get('/test',[TestController::class,'index']);
-
-// iNDEX buKU
-Route::get('/buku',[BukuController::class,'index'])->name('dashboard_admin');
-
-// Create pada 'buku'
-Route::get('/buku/create',[BukuController::class,'create']) ->name('buku.create');
-Route::post('/buku',[BukuController::class,'store'])->name('buku.store');
-
-// Delete
-Route::delete('/buku/{id}',[BukuController::class,'destroy']) ->name('buku.destroy');
-
-// Update
-Route::get('/buku/show/{id}',[BukuController::class,'show'])->name('buku.show');
-Route::post('/buku/{id}',[BukuController::class,'update'])->name('buku.update');
-
 // Search
 Route::get('/buku/search',[BukuController::class,'search'])->name('buku.search');
+
+// Admin Middleware
+Route::controller(BukuController::class)->group(function(){
+    Route::get('/buku','index')->name('dashboard_admin');
+    Route::get('/buku/create','create')->name('buku.create');
+    Route::post('/buku','store')->name('buku.store');
+    Route::delete('/buku/{id}','destroy')->name('buku.destroy');
+    Route::get('/buku/show/{id}','show')->name('buku.show');
+    Route::post('/buku/{id}','update')->name('buku.update');
+});
 
 // Login - Register
 Route::controller(LoginRegisterController::class)->group(function(){

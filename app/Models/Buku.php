@@ -10,7 +10,17 @@ class Buku extends Model
     use HasFactory;
     protected $table = 'books';
 
-    // Mendenfisikan TGL_TERBIT menggunakan Casts Untuk Laravel 10.x
+
+
+    protected $fillable = [
+        'judul',
+        'penulis',
+        'tgl_terbit',
+        'harga',
+        'photo'
+    ];
+
+     // Mendenfisikan TGL_TERBIT menggunakan Casts Untuk Laravel 10.x
     protected $casts = [
         'tgl_terbit' => 'datetime'
     ];

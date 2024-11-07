@@ -57,6 +57,7 @@
         <thead class="thead-dark">
             <tr>
                 <th>ID</th>
+                <th>Foto</th>
                 <th>Judul Buku</th>
                 <th>Penulis</th>
                 <th>Harga</th>
@@ -68,6 +69,7 @@
             @foreach ($data_buku as $index => $buku)
                 <tr>
                     <td>{{ $buku->id }}</td>
+                    <td><img src="{{ asset('storage/'.$buku->photo) }}" alt="test" style="width: 150px"></td>
                     <td>{{ $buku->judul }}</td>
                     <td>{{ $buku->penulis }}</td>
                     <td>{{ 'Rp. ' . number_format($buku->harga, 2, ',', '.') }}</td>
@@ -114,7 +116,7 @@
                     </ul>
                 @endif
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('buku.store') }}">
+                    <form method="POST" action="{{ route('buku.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="judul">Judul</label>
@@ -132,6 +134,14 @@
                             <label for="tgl_terbit">Tanggal Terbit</label>
                             <input type="date" class="form-control" id="tgl_terbit" name="tgl_terbit"
                                 class="date form-control" placeholder="yyyy/mm/dd">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="photo">Photo</label>
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo"
+                                name="photo" value="{{ old('photo') }}">
+                            @if ($errors->has('photo'))
+                                <span class="text-danger">{{ $errors->first('photo') }}</span>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <a href="{{ url('/buku') }}" class="btn btn-secondary">Kembali</a>

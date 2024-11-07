@@ -3,7 +3,6 @@
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
-
             <div class="card">
                 <div class="card-header">Register</div>
                 <div class="card-body">
@@ -48,10 +47,23 @@
                                     name="password_confirmation">
                             </div>
                         </div>
+                        <!-- Role Selection Dropdown -->
+                        <div class="mb-3 row">
+                            <label for="role" class="col-md-4 col-form-label text-md-end text-start">Role</label>
+                            <div class="col-md-6">
+                                <select class="form-control @error('role') is-invalid @enderror" id="role" name="role">
+                                    <option value="" {{ old('role') == '' ? 'selected' : '' }}>Select Role</option>
+                                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                                </select>
+                                @if ($errors->has('role'))
+                                    <span class="text-danger">{{ $errors->first('role') }}</span>
+                                @endif
+                            </div>
+                        </div>
                         <div class="mb-3 row">
                             <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Register">
                         </div>
-
                     </form>
                 </div>
             </div>
