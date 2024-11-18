@@ -62,7 +62,6 @@ class BukuController extends Controller
             $extension = $request->file('photo')->getClientOriginalExtension();
             $filenameSimpan = $filename . '_' . time() . '.' . $extension;
             $request->file('photo')->storeAs('public',$filenameSimpan);
-            // $request->file('photo')->storeAs('photo',$filenameSimpan);
         }
 
         $buku = new Buku();
@@ -72,14 +71,6 @@ class BukuController extends Controller
         $buku->tgl_terbit = $request->tgl_terbit;
         $buku->photo = $filenameSimpan ?? null;
         $buku->save();
-
-        // Buku::create([
-        //     'judul' => $request->judul,
-        //     'penulis' => $request->penulis,
-        //     'harga' => $request->harga,
-        //     'tgl_terbit' => $request->tgl_terbit,
-        //     'photo' => $request->photo
-        // ]);
 
         return redirect('/buku')->with('pesan', 'Data Buku Berhasil Disimpan!');
     }
