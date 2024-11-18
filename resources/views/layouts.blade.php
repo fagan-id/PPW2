@@ -36,6 +36,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    {{-- Glightbox Import --}}
+    <link rel="stylesheet" href="{{ asset('lightbox2/dist/css/lightbox.min.css') }}">
 </head>
 
 <body>
@@ -75,6 +78,10 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('gallery') ? 'active' : '' }}"
+                                href="{{ route('gallery.index') }}">Gallery</a>
+                        </li>
                     @endguest
                 </ul>
             </div>
@@ -87,8 +94,10 @@
     </div>
 
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('lightbox2/dist/js/lightbox-plus-jquery.min.js') }}"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
+
 </html>

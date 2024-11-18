@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('harga');
             $table->date('tgl_terbit');
             $table->string('photo')->nullable(); // kolom foto baru
+            $table->string('photoResized')->nullable(); // kolom foto Resized
             $table->timestamps();
         });
     }

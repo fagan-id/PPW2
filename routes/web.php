@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SendEmailController;
@@ -34,6 +35,7 @@ Route::controller(BukuController::class)->group(function(){
     Route::delete('/buku/{id}','destroy')->name('buku.destroy');
     Route::get('/buku/show/{id}','show')->name('buku.show');
     Route::post('/buku/{id}','update')->name('buku.update');
+    Route::get('/buku/{id}','detail')->name('buku.detail');
 });
 
 // Login - Register
@@ -49,3 +51,7 @@ Route::controller(LoginRegisterController::class)->group(function(){
 // Send Email
 Route::get('/send-email',[SendEmailController::class,'index'])->name('kirim-email');
 Route::post('/post-email',[SendEmailController::class,'store'])->name('post-email');
+
+
+// Gallery
+Route::resource('gallery', GalleryController::class);
