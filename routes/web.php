@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CompanyApiController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\LoginRegisterController;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/company',[CompanyApiController::class,'index'])->name('company');
 
 // Search
 Route::get('/buku/search',[BukuController::class,'search'])->name('buku.search');
