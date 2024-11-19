@@ -83,6 +83,8 @@
                                 <button onclick="return confirm('Yakin Ingin Menghapus?')" type="submit"
                                     class="btn btn-danger">Hapus</button>
                             </form>
+                            <a href="{{ route('buku.detail',$buku->id) }}" class="btn btn-warning">Detail</a>
+
                         </div>
                     </td>
                 </tr>
